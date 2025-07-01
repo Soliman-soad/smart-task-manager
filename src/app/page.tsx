@@ -1,3 +1,4 @@
+"use client";
 import Analysis from "@/components/sections/Analysis";
 import Hero from "@/components/sections/Hero";
 import TaskList from "@/components/sections/TaskList";
