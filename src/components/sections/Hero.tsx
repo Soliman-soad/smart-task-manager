@@ -1,5 +1,6 @@
-import { PackageCheck } from "lucide-react";
+import { PackageCheck, Plus } from "lucide-react";
 import React from "react";
+import { Button } from "../ui/button";
 
 const Hero = () => {
   return (
@@ -11,6 +12,12 @@ const Hero = () => {
       <h4 className="md:text-xl text-center">
         Manage your tasks with AI-powered subtask suggestions
       </h4>
+      <div className="mt-10">
+        <Button className="text-xl">
+            <Plus strokeWidth={4} size={20} />
+            Add task
+        </Button>
+      </div>
     </div>
   );
 };
