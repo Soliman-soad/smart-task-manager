@@ -79,9 +79,13 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
           id={`task-${task.name}`}
           className="w-4 h-4"
           checked={completedTasks}
-          onCheckedChange={(checked) =>
-            setCompletedTasks(checked === "indeterminate" ? false : checked)
-          }
+          onCheckedChange={(checked) => {
+            setCompletedTasks(checked === "indeterminate" ? false : checked);
+            onEdit({
+              ...task,
+              completed: checked === "indeterminate" ? false : checked,
+            });
+          }}
           disabled={isEditOpen}
         />
         <label
@@ -124,11 +128,15 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
         <div className="mt-2 ml-4">
           <h2 className="text-sm font-semibold mb-1">Suggested Subtasks:</h2>
           <ul className="list-disc pl-5">
-            {subtasks.map((sub, idx) => (
-              <li key={idx} className="text-sm">
-                {sub}
-              </li>
-            ))}
+            {subtasks.length > 0 ? (
+              subtasks.map((sub, idx) => (
+                <li key={idx} className="text-sm">
+                  {sub}
+                </li>
+              ))
+            ) : (
+              <li className="text-sm">No subtasks</li>
+            )}
           </ul>
         </div>
       )}
@@ -136,22 +144,6 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
         <div className="text-red-500 text-xs mt-1">{subtaskError}</div>
       )}
 
-      <div className="flex items-center gap-2 mt-2 ml-4">
-        <Input
-          type="text"
-          placeholder="Add subtask"
-          value={newSubtask}
-          onChange={(e) => setNewSubtask(e.target.value)}
-          className="h-8 text-xs"
-        />
-        <Button
-          size="sm"
-          className="h-8 px-2 text-xs"
-          onClick={handleAddSubtask}
-        >
-          Add
-        </Button>
-      </div>
       <div className="flex items-center gap-2">
         {completedTasks ? (
           <div className="inline-flex items-center gap-2 text-sm bg-emerald-500 text-white px-2 py-1 rounded-full">
@@ -189,20 +181,26 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
           </div>
         ) : (
           <>
-            {subtasks.length < 3 && (
-              <Button
-                variant="outline"
-                className="text-sm"
-                onClick={handleSuggestSubtasks}
-                disabled={subtaskLoading}
-              >
-                {subtaskLoading ? "Suggesting..." : "Suggest subtask"}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              className="text-sm"
+              onClick={handleSuggestSubtasks}
+              disabled={
+                subtaskLoading ||
+                completedTasks ||
+                isEditOpen ||
+                subtasks.length >= 3 ||
+                task.name.length === 0 ||
+                task.description.length === 0
+              }
+            >
+              {subtaskLoading ? "Suggesting..." : "Suggest subtask"}
+            </Button>
             <Button
               variant="outline"
               className="text-sm"
               onClick={() => setIsEditOpen(true)}
+              disabled={completedTasks}
             >
               <Edit size={14} />
             </Button>

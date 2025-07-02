@@ -35,7 +35,7 @@ export default function Home() {
   return (
     <div className="container mx-auto">
       <Hero onAddTask={handleAddTask} />
-      <Analysis />
+      <Analysis tasks={tasks} />
       <TaskList
         tasks={tasks}
         onEditTask={handleEditTask}
