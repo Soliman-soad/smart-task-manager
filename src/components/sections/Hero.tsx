@@ -3,8 +3,9 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import Form from "../task-component/Form";
 import Modal from "../ui/Modal";
+import { Task } from "../types/task";
 
-const Hero = () => {
+const Hero = ({ onAddTask }: { onAddTask: (task: Task) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -23,7 +24,7 @@ const Hero = () => {
         </Button>
       </div>
       <Modal isOpen={isOpen} title="Add Task" onClose={() => setIsOpen(false)}>
-        <Form onCancel={() => setIsOpen(false)} />
+        <Form onCancel={() => setIsOpen(false)} onAddTask={onAddTask} />
       </Modal>
     </div>
   );
