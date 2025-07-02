@@ -4,6 +4,7 @@ import Hero from "@/components/sections/Hero";
 import TaskList from "@/components/sections/TaskList";
 import { useState, useEffect } from "react";
 import { Task } from "@/components/types/task";
+import Footer from "@/components/sections/Footer";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -33,14 +34,17 @@ export default function Home() {
     setTasks((prev) => prev.filter((t) => t.id !== id));
   };
   return (
-    <div className="container mx-auto">
-      <Hero onAddTask={handleAddTask} />
-      <Analysis tasks={tasks} />
-      <TaskList
-        tasks={tasks}
-        onEditTask={handleEditTask}
-        onDeleteTask={handleDeleteTask}
-      />
+    <div>
+      <div className="container mx-auto">
+        <Hero onAddTask={handleAddTask} />
+        <Analysis tasks={tasks} />
+        <TaskList
+          tasks={tasks}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
+        />
+      </div>
+      <Footer />
     </div>
   );
 }
