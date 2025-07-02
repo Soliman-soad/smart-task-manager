@@ -119,10 +119,10 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
           task.description || "No details"
         )}
       </p>
-     
+
       {subtasks.length > 0 && (
         <div className="mt-2 ml-4">
-          <h2 className="text-sm font-semibold mb-1">Subtasks:</h2>
+          <h2 className="text-sm font-semibold mb-1">Suggested Subtasks:</h2>
           <ul className="list-disc pl-5">
             {subtasks.map((sub, idx) => (
               <li key={idx} className="text-sm">
@@ -135,7 +135,7 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
       {subtaskError && (
         <div className="text-red-500 text-xs mt-1">{subtaskError}</div>
       )}
-      
+
       <div className="flex items-center gap-2 mt-2 ml-4">
         <Input
           type="text"
@@ -166,7 +166,9 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
         )}
         <div className="inline-flex items-center gap-2 text-sm border px-2 py-1 rounded-full border-gray-300">
           <Calendar size={14} />
-          <p>{task.date ? new Date(task.date).toLocaleDateString() : "No date"}</p>
+          <p>
+            {task.date ? new Date(task.date).toLocaleDateString() : "No date"}
+          </p>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -187,14 +189,16 @@ const Card = ({ task, onEdit, onDelete }: CardProps) => {
           </div>
         ) : (
           <>
-            <Button
-              variant="outline"
-              className="text-sm"
-              onClick={handleSuggestSubtasks}
-              disabled={subtaskLoading}
-            >
-              {subtaskLoading ? "Suggesting..." : "Suggest subtask"}
-            </Button>
+            {subtasks.length < 3 && (
+              <Button
+                variant="outline"
+                className="text-sm"
+                onClick={handleSuggestSubtasks}
+                disabled={subtaskLoading}
+              >
+                {subtaskLoading ? "Suggesting..." : "Suggest subtask"}
+              </Button>
+            )}
             <Button
               variant="outline"
               className="text-sm"
