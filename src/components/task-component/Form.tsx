@@ -19,7 +19,7 @@ const Form = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    onAddTask({ name, description, date: date ? date.toISOString() : "" });
+    onAddTask({ id: Date.now().toString(), name, description, date: date ? date.toISOString() : "" });
     setName("");
     setDescription("");
     setDate(undefined);

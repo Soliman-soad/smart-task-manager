@@ -1,18 +1,19 @@
-import { Calendar, Check, Clock1, Edit, Save, Trash2, X } from "lucide-react";
+import { Calendar, Check, Clock1, Edit, Trash2, X } from "lucide-react";
 import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { cn } from "@/lib/utils";
 import Modal from "../ui/Modal";
 import { Input } from "../ui/input";
+import { Task } from "../types/task";
 
-interface Task {
-  name: string;
-  description: string;
-  date: string;
+interface CardProps {
+  task: Task;
+  onEdit: (task: Task) => void;
+  onDelete: (id: string) => void;
 }
 
-const Card = ({ task }: { task: Task }) => {
+const Card = ({ task, onEdit, onDelete }: CardProps) => {
   const [completedTasks, setCompletedTasks] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -20,7 +21,6 @@ const Card = ({ task }: { task: Task }) => {
   const [subtaskLoading, setSubtaskLoading] = useState(false);
   const [subtaskError, setSubtaskError] = useState<string | null>(null);
   const [newSubtask, setNewSubtask] = useState("");
-
   const [editName, setEditName] = useState(task.name);
   const [editDescription, setEditDescription] = useState(task.description);
 
@@ -43,6 +43,7 @@ const Card = ({ task }: { task: Task }) => {
         setSubtaskError(data.error || "Failed to get subtasks");
       }
     } catch (err) {
+      console.log(err);
       setSubtaskError("Failed to get subtasks");
     } finally {
       setSubtaskLoading(false);
@@ -54,6 +55,16 @@ const Card = ({ task }: { task: Task }) => {
       setSubtasks((prev) => [...prev, newSubtask.trim()]);
       setNewSubtask("");
     }
+  };
+
+  const handleEditConfirm = () => {
+    onEdit({ ...task, name: editName, description: editDescription });
+    setIsEditOpen(false);
+  };
+
+  const handleDeleteConfirm = () => {
+    onDelete(task.id);
+    setIsOpen(false);
   };
 
   return (
@@ -108,7 +119,7 @@ const Card = ({ task }: { task: Task }) => {
           task.description || "No details"
         )}
       </p>
-      {/* Subtasks Section */}
+     
       {subtasks.length > 0 && (
         <div className="mt-2 ml-4">
           <h2 className="text-sm font-semibold mb-1">Subtasks:</h2>
@@ -124,7 +135,7 @@ const Card = ({ task }: { task: Task }) => {
       {subtaskError && (
         <div className="text-red-500 text-xs mt-1">{subtaskError}</div>
       )}
-      {/* Add Subtask Input */}
+      
       <div className="flex items-center gap-2 mt-2 ml-4">
         <Input
           type="text"
@@ -155,7 +166,7 @@ const Card = ({ task }: { task: Task }) => {
         )}
         <div className="inline-flex items-center gap-2 text-sm border px-2 py-1 rounded-full border-gray-300">
           <Calendar size={14} />
-          <p>{task.date || "No date"}</p>
+          <p>{task.date ? new Date(task.date).toLocaleDateString() : "No date"}</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -163,7 +174,7 @@ const Card = ({ task }: { task: Task }) => {
           <div className="flex items-center gap-2  justify-end">
             <Button
               className="text-sm bg-emerald-600"
-              onClick={() => setIsEditOpen(false)}
+              onClick={handleEditConfirm}
             >
               <Check />
             </Button>
@@ -207,7 +218,7 @@ const Card = ({ task }: { task: Task }) => {
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
-          <Button>Delete</Button>
+          <Button onClick={handleDeleteConfirm}>Delete</Button>
         </div>
       </Modal>
     </div>
