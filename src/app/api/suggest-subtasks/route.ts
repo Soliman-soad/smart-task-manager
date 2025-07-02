@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     const url =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key" +
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" +
       apiKey;
     const prompt = `Break the following task into 3-5 smaller actionable subtasks. Return only the subtasks as a comma-separated list. Task: ${task} Description: ${description}`;
 
