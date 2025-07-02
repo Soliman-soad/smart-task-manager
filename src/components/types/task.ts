@@ -4,3 +4,9 @@ export interface Task {
     description: string;
     date: string;
   }
+
+  export interface TaskListProps {
+    tasks: Task[];
+    onEditTask: (task: Task) => void;
+    onDeleteTask: (id: string) => void;
+  }

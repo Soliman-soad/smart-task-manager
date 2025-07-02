@@ -1,12 +1,8 @@
 import React from "react";
 import Card from "../task-component/Card";
-import { Task } from "../types/task";
+import { TaskListProps } from "../types/task";
 
-interface TaskListProps {
-  tasks: Task[];
-  onEditTask: (task: Task) => void;
-  onDeleteTask: (id: string) => void;
-}
+
 
 const TaskList = ({ tasks, onEditTask, onDeleteTask }: TaskListProps) => {
   return (
